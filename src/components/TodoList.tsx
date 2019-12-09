@@ -1,29 +1,13 @@
 import React from "react";
 import TodoItem from "./TodoItem";
+import { useTodosState } from "../context/TodosContext";
 
 function TodoList() {
-  const todos = [
-    {
-      id: 1,
-      text: "Context API 배우기",
-      done: true
-    },
-    {
-      id: 2,
-      text: "Typescript 배우기",
-      done: true
-    },
-    {
-      id: 3,
-      text: "Context와 typescript 함께 사용하기",
-      done: false
-    }
-  ];
-
+  const todos = useTodosState();
   return (
     <ul>
       {todos.map(todo => (
-        <TodoItem todo={todo} key={todo.id}></TodoItem>
+        <TodoItem todo={todo} key={todo.id} />
       ))}
     </ul>
   );

@@ -1,6 +1,6 @@
 // 상태전용 Context
 
-import React, { createContext, Dispatch, useReducer } from "react";
+import React, { createContext, Dispatch, useReducer, useContext } from "react";
 
 export type Todo = {
   id: number;
@@ -10,7 +10,7 @@ export type Todo = {
 
 type TodosState = Todo[];
 
-const TodoStateContext = createContext<TodosState | undefined>(undefined);
+const TodosStateContext = createContext<TodosState | undefined>(undefined);
 
 type Action =
   | {
@@ -76,9 +76,21 @@ export function TodosContextProvider({
 
   return (
     <TodosDispatchContext.Provider value={dispatch}>
-      <TodoStateContext.Provider value={todos}>
+      <TodosStateContext.Provider value={todos}>
         {children}
-      </TodoStateContext.Provider>
+      </TodosStateContext.Provider>
     </TodosDispatchContext.Provider>
   );
+}
+
+export function useTodosState() {
+  const state = useContext(TodosStateContext);
+  if (!state) throw new Error("TodosProvider not found");
+  return state;
+}
+
+export function useTodosDispatch() {
+  const dispatch = useContext(TodosDispatchContext);
+  if (!dispatch) throw new Error("TodosProvider not found");
+  return dispatch;
 }
